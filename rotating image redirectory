@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Video Gallery</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    transition: background-image 1.5s ease-in-out;
+}
+
+/* Video Grid */
+.video-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    min-height: 100vh;
+    justify-items: center;
+    align-items: start;
+    box-sizing: border-box;
+}
+
+/* Video Styling */
+.video-container iframe {
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: none;
+    border-radius: 0px;
+}
+
+/* Logo Image */
+.logo {
+    display: block;
+    margin: 20px auto 0 auto;
+    width: 160px;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+/* Controls */
+.bg-toggle,
+.bg-nav {
+    position: fixed;
+    top: 15px;
+    z-index: 9999;
+    padding: 10px 16px;
+    border: none;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+.bg-toggle:hover,
+.bg-nav:hover {
+    background: rgba(0,0,0,0.9);
+}
+
+#prevBg {
+    left: 10px;
+}
+
+#nextBg {
+    left: 115px;
+}
+
+#bgToggle {
+    right: 10px;
+}
+
+  #visitDigitailia{
+    left: 195px;
+}
+</style>
+</head>
+
+<body>
+
+<button id="prevBg" class="bg-nav">⏮ Previous</button>
+<button id="nextBg" class="bg-nav">⏭ Next</button>
+<button id="bgToggle" class="bg-toggle">⏸ Pause</button>
+  <button id="visitDigitailia" class="bg-nav" style="color:red;">
+    Digitailia
+</button>
+
+<script>
+document.getElementById("visitWebsite").addEventListener("click", () => {
+    window.open(
+        "addlinkhere",
+        "_blank"
+    );
+});
+</script>
+<div class="video-container">
+
+</div>
+
+<script>
+const backgrounds = [
+ "",
+  "",
+ "",
+  "",
+  "",
+  "",
+  "",
+  ""
+ ];
+ const links = [
+   "",
+   "",
+    "",
+    "",
+    "",
+   "",
+   "",
+   ""
+];
+
+let current = 0;
+let slideshowRunning = true;
+let slideshowInterval;
+
+function showBackground(index) {
+    current = (index + backgrounds.length) % backgrounds.length;
+
+    document.body.style.backgroundImage =
+        `url('${backgrounds[current]}')`;
+}
+
+function nextBackground() {
+    showBackground(current + 1);
+}
+
+function prevBackground() {
+    showBackground(current - 1);
+}
+
+function startSlideshow() {
+    slideshowInterval = setInterval(nextBackground, 3000);
+}
+
+function stopSlideshow() {
+    clearInterval(slideshowInterval);
+}
+
+function restartSlideshow() {
+    if (slideshowRunning) {
+        stopSlideshow();
+        startSlideshow();
+    }
+}
+
+/* Initialize */
+showBackground(0);
+startSlideshow();
+
+/* Buttons */
+const toggleBtn = document.getElementById("bgToggle");
+const nextBtn = document.getElementById("nextBg");
+const prevBtn = document.getElementById("prevBg");
+
+toggleBtn.addEventListener("click", () => {
+    if (slideshowRunning) {
+        stopSlideshow();
+        toggleBtn.textContent = "▶ Play";
+    } else {
+        startSlideshow();
+        toggleBtn.textContent = "⏸ Pause";
+    }
+
+    slideshowRunning = !slideshowRunning;
+});
+
+nextBtn.addEventListener("click", () => {
+    nextBackground();
+    restartSlideshow();
+});
+
+prevBtn.addEventListener("click", () => {
+    prevBackground();
+    restartSlideshow();
+});
+
+document.body.addEventListener("click", (e) => {
+    // Ignore clicks on buttons
+    if (e.target.tagName === "BUTTON") return;
+
+    window.open(links[current], "_blank");
+});
+</script>
+  
+</body>
+</html>
